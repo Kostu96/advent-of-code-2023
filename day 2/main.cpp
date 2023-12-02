@@ -77,7 +77,7 @@ int part1()
                 break;
             }
         }
-        
+
         if (possible) {
             total += gameID;
         }
@@ -89,7 +89,50 @@ int part1()
 
 int part2()
 {
-    return 0;
+    unsigned int total = 0;
+    std::ifstream fin("input.txt");
+    std::string str{};
+    while (std::getline(fin, str))
+    {
+        auto colonPos = str.find_first_of(':');
+        auto str1 = str.substr(0, colonPos);
+        auto str2 = str.substr(colonPos + 1);
+
+        std::stringstream ss(str1);
+        std::string temp;
+        unsigned int gameID;
+        ss >> temp;
+        ss >> gameID;
+        
+        auto sets = parseGame(str2);
+        unsigned int min_red = 0, min_green = 0, min_blue = 0;
+        for (auto& set : sets)
+        {
+            unsigned int current_red = 0, current_green = 0, current_blue = 0;
+            unsigned int number;
+            char ch;
+            std::stringstream ss(set);
+            do {
+                ss >> number;
+                ss >> temp;
+                ch = temp[temp.size() - 1];
+                if (ch == ',') temp = temp.substr(0, temp.size() - 1);
+
+                if (temp == "red") current_red = number;
+                else if (temp == "green") current_green = number;
+                else if (temp == "blue") current_blue = number;
+            } while (ch == ',');
+
+            if (current_red > min_red) min_red = current_red;
+            if (current_green > min_green) min_green = current_green;
+            if (current_blue > min_blue) min_blue = current_blue;
+        }
+
+        total += min_red * min_green * min_blue;
+    }
+
+    fin.close();
+    return total;
 }
 
 int main()
