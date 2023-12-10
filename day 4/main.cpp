@@ -35,6 +35,7 @@ unsigned int part1()
         total += points;
     }
 
+    fin.close();
     return total;
 }
 
@@ -75,6 +76,7 @@ unsigned int part2()
         }
     }
 
+    fin.close();
     return sum_points(matches, 0, matches.size());
 }
 
